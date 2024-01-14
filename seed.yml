@@ -1,2 +1,2 @@
 before_compile:
-    - yarn install
+    - yarn install  --ignore-engines --frozen-lockfile
