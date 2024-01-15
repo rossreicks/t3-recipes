@@ -1,43 +1,57 @@
 'use client';
 
-import { useRouter } from 'next/navigation';
-import { useState } from 'react';
-
+import { zodResolver } from '@hookform/resolvers/zod';
+import { Button } from '@src/components/ui/button';
+import { FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@src/components/ui/form';
+import { Input } from '@src/components/ui/input';
 import { api } from '@src/trpc/react';
+import { useRouter } from 'next/navigation';
+import { Form, useForm } from 'react-hook-form';
+import * as z from 'zod';
+
+const formSchema = z.object({
+    name: z.string().min(2).max(50),
+});
 
 export function CreatePost() {
     const router = useRouter();
-    const [name, setName] = useState('');
+    const form = useForm<z.infer<typeof formSchema>>({
+        resolver: zodResolver(formSchema),
+        defaultValues: {
+            name: '',
+        },
+    });
+
+    function onSubmit(values: z.infer<typeof formSchema>) {
+        createPost.mutate(values);
+    }
 
     const createPost = api.post.create.useMutation({
         onSuccess: () => {
             router.refresh();
-            setName('');
+            form.reset();
         },
     });
 
     return (
-        <form
-            onSubmit={(e) => {
-                e.preventDefault();
-                createPost.mutate({ name });
-            }}
-            className='flex flex-col gap-2'
-        >
-            <input
-                type='text'
-                placeholder='Title'
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                className='w-full rounded-full px-4 py-2 text-black'
-            />
-            <button
-                type='submit'
-                className='rounded-full bg-white/10 px-10 py-3 font-semibold transition hover:bg-white/20'
-                disabled={createPost.isLoading}
-            >
-                {createPost.isLoading ? 'Submitting...' : 'Submit'}
-            </button>
-        </form>
+        <Form {...form}>
+            <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-8'>
+                <FormField
+                    control={form.control}
+                    name='name'
+                    render={({ field }) => (
+                        <FormItem>
+                            <FormLabel>Post Name</FormLabel>
+                            <FormControl>
+                                <Input placeholder='Enter post title here' {...field} />
+                            </FormControl>
+                            <FormDescription>This will be the name of the post</FormDescription>
+                            <FormMessage />
+                        </FormItem>
+                    )}
+                />
+                <Button type='submit'>Submit</Button>
+            </form>
+        </Form>
     );
 }
