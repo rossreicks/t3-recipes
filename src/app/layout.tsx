@@ -22,8 +22,8 @@ export default function RootLayout({
     children: React.ReactNode;
 }) {
     return (
-        <html lang='en'>
-            <body className={`font-sans ${inter.variable}`}>
+        <html lang='en' className='h-full bg-white'>
+            <body className={`h-full font-sans ${inter.variable}`}>
                 <TRPCReactProvider cookies={cookies().toString()}>{children}</TRPCReactProvider>
             </body>
         </html>
