@@ -1,14 +1,8 @@
 // Example model schema from the Drizzle docs
 // https://orm.drizzle.team/docs/sql-schema-declaration
 
-import { sql } from "drizzle-orm";
-import {
-  bigint,
-  index,
-  mysqlTableCreator,
-  timestamp,
-  varchar,
-} from "drizzle-orm/mysql-core";
+import { sql } from 'drizzle-orm';
+import { bigint, index, mysqlTableCreator, timestamp, varchar } from 'drizzle-orm/mysql-core';
 
 /**
  * This is an example of how to use the multi-project schema feature of Drizzle ORM. Use the same
@@ -19,16 +13,14 @@ import {
 export const mysqlTable = mysqlTableCreator((name) => `t3-recipes_${name}`);
 
 export const posts = mysqlTable(
-  "post",
-  {
-    id: bigint("id", { mode: "number" }).primaryKey().autoincrement(),
-    name: varchar("name", { length: 256 }),
-    createdAt: timestamp("created_at")
-      .default(sql`CURRENT_TIMESTAMP`)
-      .notNull(),
-    updatedAt: timestamp("updatedAt").onUpdateNow(),
-  },
-  (example) => ({
-    nameIndex: index("name_idx").on(example.name),
-  })
+    'post',
+    {
+        id: bigint('id', { mode: 'number' }).primaryKey().autoincrement(),
+        name: varchar('name', { length: 256 }),
+        createdAt: timestamp('created_at').default(sql`CURRENT_TIMESTAMP`).notNull(),
+        updatedAt: timestamp('updatedAt').onUpdateNow(),
+    },
+    (example) => ({
+        nameIndex: index('name_idx').on(example.name),
+    })
 );
