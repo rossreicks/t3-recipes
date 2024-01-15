@@ -16,17 +16,14 @@ jobs:
             DATABASE_URL: ${{ secrets.DATABASE_URL }}
         steps:
             - uses: actions/checkout@v4
-            - uses: actions/setup-node@v4
+            - uses: pnpm/action-setup@v2
               with:
-                  node-version: 18
-                  cache: 'yarn'
+                  version: 8
             - name: configure aws credentials
               uses: aws-actions/configure-aws-credentials@v4
               with:
                   role-to-assume: arn:aws:iam::255150007500:role/github-deploy-role
                   role-duration-seconds: 900
                   aws-region: us-east-1
-            - name: Install dependencies
-              run: yarn install
             - name: SST Deploy
               run: npx sst deploy --stage prod
