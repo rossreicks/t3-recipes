@@ -8,7 +8,7 @@
 		"db:push": "drizzle-kit push:mysql",
 		"db:studio": "drizzle-kit studio",
 		"dev": "sst bind next dev",
-		"lint": "npx biome lint ./src --apply",
+		"lint": "npx biome lint ./src --apply-unsafe",
 		"format": "npx @biomejs/biome format ./src --write",
 		"start": "next start",
 		"prepare": "husky install"
