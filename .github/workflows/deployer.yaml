@@ -27,4 +27,4 @@ jobs:
                   role-duration-seconds: 900
                   aws-region: us-east-1
             - name: SST Deploy
-              run: npx sst deploy --stage prod
+              run: pnpm sst deploy --stage prod

@@ -1,28 +1,21 @@
 import Link from 'next/link';
 
-import { CreatePost } from '@src/app/_components/create-post';
+import { ParseRecipeForm } from '@src/app/_components/parse-recipe';
+import { Button } from '@src/components/ui/button';
 import { api } from '@src/trpc/server';
+import RecentRecipes from './_components/recent-recipes';
 
 export default async function Home() {
     return (
-        <main className='flex min-h-full flex-col justify-center px-6 py-12 lg:px-8'>
-            <CrudShowcase />
+        <main className='flex min-h-full flex-col justify-center p-6 lg:px-8'>
+            <div className='grid grid-cols-1 lg:grid-cols-4 gap-y-4'>
+                <div className='col-span-3'>
+                    <RecentRecipes />
+                </div>
+                <div className='col-span-1'>
+                    <ParseRecipeForm />
+                </div>
+            </div>
         </main>
-    );
-}
-
-async function CrudShowcase() {
-    const latestPost = await api.post.getLatest.query();
-
-    return (
-        <div className='sm:mx-auto sm:w-full sm:max-w-sm'>
-            {latestPost ? (
-                <h3 className='truncate'>Your most recent post: {latestPost.name}</h3>
-            ) : (
-                <h3>You have no posts yet.</h3>
-            )}
-
-            <CreatePost />
-        </div>
     );
 }
